@@ -1,0 +1,940 @@
+/*
+Theme Name: In Het Nauw
+Theme URI:
+Author: Ruben Smits
+Version: 1.0
+*/
+
+/* ============================================
+   KLEURVARIABELEN
+   ============================================ */
+
+:root {
+    --color-bg:           #f0ece4;
+    --color-card-bg:      #ebe6dc;
+    --color-uitspraak-bg: #2f4a7a;
+    --color-text:         #1c1c1c;
+    --color-accent:       #2f4a7a;
+    --color-btn:          #2f4a7a;
+}
+
+html[data-theme="dark"] {
+    --color-bg:           #1c1c1c;
+    --color-card-bg:      #2a2a2a;
+    --color-uitspraak-bg: #1b2a40;
+    --color-text:         #e8e0d0;
+    --color-accent:       #2563EB;
+    --color-btn:          #2563EB;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+        --color-bg:           #1c1c1c;
+        --color-card-bg:      #2a2a2a;
+        --color-uitspraak-bg: #1b2a40;
+        --color-text:         #e8e0d0;
+        --color-accent:       #2563EB;
+        --color-btn:          #2563EB;
+    }
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+.ihn-logo {
+    display: block;
+    color: var(--color-text);
+    width: 270px;
+    height: auto;
+}
+
+.ihn-logo path {
+    fill: currentColor;
+}
+
+/* ============================================
+   HULPKLASSEN
+   ============================================ */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ============================================
+   FONTS: Source Sans 3 basis, EB Garamond voor accenten
+   ============================================ */
+
+body,
+.wp-block-post-content p,
+.wp-block-post-content li,
+.ihn-vonnis-kader p,
+.verhaal-excerpt,
+.verhaal-lees-verder,
+.uitspraak-content {
+    font-family: 'Source Sans 3', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.wp-block-post-title,
+.wp-block-pullquote,
+.wp-block-pullquote p,
+.wp-block-pullquote blockquote,
+.ihn-vonnis-kader h3,
+.ihn-doneer-btn,
+.ihn-newsletter-btn,
+.ihn-scheme-btn,
+.uitspraak-label,
+.verhaal-nummer,
+.verhaal-nummer-single,
+.single .verhaal-nummer-single {
+    font-family: 'EB Garamond', Georgia, serif !important;
+}
+
+/* ============================================
+   DROPCAP
+   ============================================ */
+
+p.has-drop-cap::first-letter {
+    font-family: 'EB Garamond', Georgia, serif !important;
+    font-weight: 800 !important;
+    font-size: 3.6em !important;
+    float: left;
+    line-height: 0.85 !important;
+    margin: 0.06em 0.08em 0 0 !important;
+    color: inherit !important;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.ihn-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    border-bottom: 1px solid var(--color-accent);
+    position: relative;
+}
+
+.ihn-header svg {
+    color: var(--color-text);
+    width: 270px;
+    height: auto;
+    display: block;
+}
+
+.ihn-logo-link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: inherit;
+}
+
+.ihn-header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Header, footer en bijzondere items in EB Garamond */
+.ihn-header,
+.ihn-header *,
+.ihn-footer,
+.ihn-footer * {
+    font-family: 'EB Garamond', Georgia, serif !important;
+}
+
+/* ============================================
+   DONEER WRAP
+   ============================================ */
+
+.ihn-doneer-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    margin-left: 3rem;
+}
+
+.ihn-doneer-pre {
+    font-size: 1.2rem;
+    opacity: 0.7;
+    line-height: 1.2;
+    font-style: italic;
+}
+
+.ihn-doneer-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-btn);
+    color: #ffffff;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    width: 70px;
+    height: 26px;
+    border-radius: 12px;
+    transition: opacity 0.2s;
+    text-align: center;
+    line-height: 1.3;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.ihn-doneer-btn:hover {
+    opacity: 0.85;
+}
+
+.ihn-trigger-warning {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 4rem;
+    right: 4rem;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    text-align: center;
+    font-style: italic;
+}
+
+.ihn-header:has(.ihn-trigger-warning) {
+    margin-bottom: 2rem;
+}
+
+.ihn-trigger-warning p {
+    margin: 0;
+    line-height: 1.3;
+}
+
+
+/* ============================================
+   HAMBURGER MENU
+   ============================================ */
+
+.ihn-hamburger-nav {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.ihn-hamburger-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ihn-hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 26px;
+}
+
+.ihn-hamburger-icon span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: var(--color-text);
+    transition: transform 0.25s, opacity 0.25s;
+}
+
+.ihn-hamburger-btn[aria-expanded="true"] .ihn-hamburger-icon span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.ihn-hamburger-btn[aria-expanded="true"] .ihn-hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.ihn-hamburger-btn[aria-expanded="true"] .ihn-hamburger-icon span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Menu-paneel */
+.ihn-nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 220px;
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-accent);
+    z-index: 1000;
+    font-family: 'Source Sans 3', sans-serif;
+}
+
+.ihn-nav-menu.is-open {
+    display: block;
+}
+
+.ihn-nav-menu li {
+    display: block;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.ihn-nav-menu li a {
+    display: block;
+    height: auto;
+    padding: 0.35rem 1.25rem;
+    line-height: 1.2;
+    font-size: 1rem;
+    color: var(--color-text);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ihn-nav-menu li a:hover {
+    background-color: var(--color-btn);
+    color: #ffffff;
+}
+
+
+/* ============================================
+   THEMAWISSELAAR
+   ============================================ */
+
+.ihn-scheme-btn {
+    background: transparent;
+    border: 1px solid var(--color-accent);
+    color: var(--color-text);
+    padding: 0.3em 0.7em;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+}
+
+.ihn-scheme-btn:hover,
+.ihn-scheme-btn.is-active {
+    background-color: var(--color-btn);
+    color: #ffffff;
+}
+
+.ihn-nav-theme {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.15rem 1.25rem;
+    border-top: 1px solid var(--color-accent);
+    margin-top: 0.25rem;
+}
+
+.ihn-nav-theme .ihn-scheme-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 0.25em 0.4em;
+}
+
+/* ============================================
+   HOMEPAGE GRID
+   ============================================ */
+
+.ihn-home-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-auto-rows: auto;
+    gap: 2.5rem;
+    margin: 2rem -4rem;
+    padding: 0 4rem;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+.ihn-verhaal {
+    background-color: var(--color-card-bg);
+    border: none;
+    border-radius: 20px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    box-sizing: border-box;
+}
+
+.ihn-verhaal-groot {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    min-height: 280px;
+    font-size: 1.1rem;
+    align-self: stretch;
+}
+
+.ihn-verhaal-2,
+.ihn-verhaal-3,
+.ihn-verhaal-4 {
+    min-height: 180px;
+    font-size: 0.95rem;
+}
+
+.ihn-verhalen-rij2 {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* ============================================
+   UITSPRAAK KADER
+   ============================================ */
+
+.ihn-uitspraak-card {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    min-height: 140px;
+    max-height: 270px;
+    padding: 1.5rem;
+    margin: 0;
+    border-radius: 20px;
+    background-color: var(--color-uitspraak-bg);
+    color: #e8e0d0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+    align-self: start;
+    justify-self: end;
+}
+
+.ihn-uitspraak-card h2,
+.ihn-uitspraak-card .wp-block-post-title,
+.ihn-uitspraak-card p {
+    color: #e8e0d0;
+}
+
+.uitspraak-label {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0 0 1.1em 0;
+    line-height: 1.3;
+}
+
+.uitspraak-content {
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+
+.uitspraak-content p:first-child {
+    margin: 0 0 0.3em 0;
+    font-style: normal;
+}
+
+.uitspraak-content p:nth-child(2) {
+    font-style: italic;
+    margin: 0 0 0.8em 0;
+}
+
+.uitspraak-content p:nth-child(n+3) {
+    font-style: normal;
+    margin: 0 0 0.75em 0;
+}
+
+.uitspraak-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   VERHAAL TEKST
+   ============================================ */
+
+.verhaal-excerpt {
+    line-height: 1.75;
+    margin: 0;
+    flex: 1;
+}
+
+.verhaal-lees-verder {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.5;
+    margin-top: auto;
+    color: var(--color-text);
+}
+
+.verhaal-lees-verder a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-style: italic;
+}
+
+.verhaal-lees-verder a:visited {
+    color: var(--color-accent);
+}
+
+.verhaal-lees-verder a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================
+   VERHAALNUMMER (homepage)
+   ============================================ */
+
+.verhaal-nummer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2em;
+    height: 2.2em;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+/* ============================================
+   ARTIKELPAGINA (single)
+   ============================================ */
+
+.single main {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.single .wp-block-post-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 2rem;
+    line-height: 1.25;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--color-text) !important;
+}
+
+.single .verhaal-nummer-single {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4em;
+    height: 2.4em;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    color: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+    position: relative;
+    top: -1px !important;
+    margin-right: 0.75rem;
+}
+
+.single .wp-block-post-meta {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.single .wp-block-post-content {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    position: relative;
+}
+
+.single .wp-block-post-content p {
+    margin-bottom: 1.5em;
+}
+
+@media (max-width: 700px) {
+    .single main {
+        margin: 1.5rem auto;
+        padding: 0 1rem;
+    }
+
+    .single .wp-block-post-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* ============================================
+   LEESTIJD (naast verhaal, rechts)
+   ============================================ */
+
+.ihn-leestijd,
+.ihn-trigger-warning,
+.ihn-trigger-warning p,
+.ihn-doneer-pre {
+    font-family: 'EB Garamond', Georgia, serif !important;
+}
+
+.ihn-leestijd {
+    position: absolute;
+    left: 100%;
+    top: 3.3em;
+    margin-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--color-text);
+    opacity: 0.6;
+    white-space: nowrap;
+}
+
+.ihn-leestijd-icon {
+    flex-shrink: 0;
+}
+
+@media (max-width: 1100px) {
+    .ihn-leestijd {
+        display: none;
+    }
+}
+
+
+.single.category-verhalen .wp-block-post-content blockquote p {
+    font-family: 'EB Garamond', Georgia, serif;
+}
+
+.single.category-verhalen .wp-block-post-content .ihn-vonnis-kader p,
+.single.category-verhalen .wp-block-post-content blockquote p {
+    font-size: inherit;
+    line-height: 1.2;
+}
+
+/* ============================================
+   SCENEWISSELING
+   ============================================ */
+
+.ihn-scenewisseling {
+    border: none;
+    border-top: 2px solid var(--color-accent);
+    opacity: 0.7;
+    width: 50vw;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    margin-left: calc(-50vw + 50%);
+    margin-right: auto;
+}
+
+/* ============================================
+   PULL QUOTE
+   ============================================ */
+
+.single .wp-block-pullquote,
+.wp-block-post-content .wp-block-pullquote {
+    float: right;
+    width: 80%;
+    margin-left: 2rem;
+    margin-right: -10rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border: none !important;
+    border-left: 3px solid var(--color-accent) !important;
+    padding: 0.5rem 2rem 0.5rem 1.25rem !important;
+    text-align: left !important;
+    box-sizing: border-box;
+}
+
+.single .wp-block-pullquote blockquote,
+.wp-block-post-content .wp-block-pullquote blockquote {
+    margin: 0;
+    padding: 0;
+}
+
+.single .wp-block-pullquote p,
+.wp-block-post-content .wp-block-pullquote p {
+    font-size: 1.9rem !important;
+    line-height: 1.2 !important;
+    font-style: italic !important;
+    color: var(--color-text) !important;
+    text-align: left !important;
+    margin: 0 !important;
+}
+
+/* ============================================
+   HET VONNIS KADER
+   ============================================ */
+
+.ihn-vonnis-kader {
+    float: right;
+    width: 45%;
+    min-height: 0;
+    height: auto;
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 0 -3rem 1.5rem 1.5rem;
+    background-color: rgba(37, 99, 235, 0.04);
+    opacity: 0.95;
+    clear: right;
+    box-sizing: border-box;
+}
+
+.ihn-vonnis-kader h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: var(--color-text);
+}
+
+.ihn-vonnis-kader p {
+    margin: 0.75rem 0;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.ihn-vonnis-kader p:last-child {
+    margin-bottom: 0;
+}
+
+.single.category-verhalen .wp-block-post-content .ihn-vonnis-kader p {
+    font-family: 'Source Sans 3', sans-serif;
+}
+
+/* ============================================
+   GERELATEERDE VERHALEN (onderaan verhalen)
+   ============================================ */
+
+.ihn-gerelateerde {
+    margin: 4rem -4rem 0 -4rem;
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--color-accent);
+}
+
+.ihn-gerelateerde h2 {
+    font-size: 1.5rem;
+    margin: 0 0 2rem 0;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--color-text) !important;
+}
+
+.ihn-gerelateerde-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 860px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .ihn-gerelateerde-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ihn-gerelateerde {
+        margin: 4rem -1rem 0 -1rem;
+        padding: 2rem 1rem;
+    }
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.ihn-footer {
+    border-top: 1px solid var(--color-accent);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    margin-top: 3rem;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+.ihn-footer-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 2rem;
+    align-items: center;
+    padding-left: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.ihn-footer-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.ihn-social-link {
+    color: var(--color-text);
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.ihn-social-link:hover {
+    color: var(--color-accent);
+}
+
+.ihn-footer-newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ihn-newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 320px;
+}
+
+.ihn-newsletter-input {
+    padding: 0.5em 0.8em;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ihn-newsletter-input::placeholder {
+    opacity: 0.5;
+}
+
+.ihn-newsletter-btn {
+    padding: 0.45em 1em;
+    background-color: var(--color-btn);
+    color: #ffffff;
+    border: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-align: center;
+}
+
+.ihn-newsletter-btn:hover {
+    opacity: 0.85;
+}
+
+.ihn-footer-contact {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.ihn-footer-contact p {
+    margin: 0 0 0.4rem 0;
+}
+
+.ihn-footer-contact-link {
+    display: inline-block;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    padding: 0.3em 0.8em;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.ihn-footer-contact-link:hover {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+}
+
+.ihn-footer-copy {
+    text-align: right;
+}
+
+.ihn-copyright {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    opacity: 0.7;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .ihn-footer-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .ihn-footer-socials {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .ihn-footer-copy {
+        text-align: left;
+    }
+}
+
+@media (max-width: 700px) {
+    .ihn-header-center {
+        display: none;
+    }
+
+    .ihn-header:has(.ihn-trigger-warning) {
+        margin-bottom: 0;
+    }
+
+    .ihn-footer {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .ihn-footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ihn-newsletter-form {
+        max-width: 100%;
+    }
+}
+
+/*
+Correctie om pull quotes juiste font te geven
+*/
+.single .wp-block-pullquote,
+.single .wp-block-pullquote *,
+.wp-block-post-content .wp-block-pullquote,
+.wp-block-post-content .wp-block-pullquote * {
+    font-family: 'EB Garamond', Georgia, serif !important;
+}
+
+/* 
+Correctie om titel van vonnis juiste font te geven
+*/
+.single.category-verhalen .wp-block-post-content .ihn-vonnis-kader h3,
+.single.category-verhalen .wp-block-post-content .ihn-vonnis-kader .wp-block-heading,
+.single.category-verhalen .wp-block-post-content .ihn-vonnis-kader h3 *,
+.single .ihn-vonnis-kader h3,
+.single .ihn-vonnis-kader .wp-block-heading {
+    font-family: 'EB Garamond', Georgia, serif !important;
+}

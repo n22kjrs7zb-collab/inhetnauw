@@ -1,0 +1,110 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "useRootPaddingAwareAlignments": true,
+    "spacing": {
+      "padding": true,
+      "margin": true,
+      "units": ["px", "em", "rem", "%"]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "'EB Garamond', Georgia, serif",
+          "name": "EB Garamond",
+          "slug": "eb-garamond",
+          "fontFace": [
+            {
+              "fontFamily": "EB Garamond",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/EBGaramond-Regular.woff2"]
+            },
+            {
+              "fontFamily": "EB Garamond",
+              "fontWeight": "400",
+              "fontStyle": "italic",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/EBGaramond-Italic.woff2"]
+            },
+            {
+              "fontFamily": "EB Garamond",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/EBGaramond-Bold.woff2"]
+            },
+            {
+              "fontFamily": "EB Garamond",
+              "fontWeight": "800",
+              "fontStyle": "normal",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/EBGaramond-ExtraBold.woff2"]
+            },
+            {
+              "fontFamily": "EB Garamond",
+              "fontWeight": "800",
+              "fontStyle": "italic",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/EBGaramond-ExtraBoldItalic.woff2"]
+            }
+          ]
+        },
+        {
+          "fontFamily": "'Source Sans 3', sans-serif",
+          "name": "Source Sans 3",
+          "slug": "source-sans-3",
+          "fontFace": [
+            {
+              "fontFamily": "Source Sans 3",
+              "fontWeight": "200 900",
+              "fontStyle": "normal",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/SourceSans3-VariableFont_wght.woff2"]
+            },
+            {
+              "fontFamily": "Source Sans 3",
+              "fontWeight": "200 900",
+              "fontStyle": "italic",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/SourceSans3-Italic-VariableFont_wght.woff2"]
+            }
+          ]
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "860px",
+      "wideSize": "1200px"
+    }
+  },
+  "styles": {
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--source-sans-3)",
+      "fontSize": "1.125rem",
+      "lineHeight": "1.7"
+    },
+    "spacing": {
+      "padding": {
+        "top": "0px",
+        "right": "4rem",
+        "bottom": "0px",
+        "left": "4rem"
+      }
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--eb-garamond)"
+        }
+      },
+      "button": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--eb-garamond)"
+        }
+      }
+    }
+  }
+}

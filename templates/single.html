@@ -1,0 +1,28 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main"} -->
+<main>
+    <!-- wp:group {"layout":{"type":"constrained"}} -->
+    <div>
+        <!-- wp:post-title {"level":1} /-->
+
+        <!-- wp:post-content {"lock":{"move":false,"remove":false}} /-->
+    </div>
+    <!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:html -->
+<div id="ihn-gerelateerde-placeholder"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var placeholder = document.getElementById('ihn-gerelateerde-placeholder');
+    if (placeholder) {
+        placeholder.innerHTML = `<?php echo addslashes(ihn_gerelateerde_verhalen()); ?>`;
+    }
+});
+</script>
+<!-- /wp:html -->
+
+<!-- wp:template-part {"slug":"footer"} /-->
