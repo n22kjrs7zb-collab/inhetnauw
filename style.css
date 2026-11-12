@@ -984,3 +984,75 @@ Correctie om titel van vonnis juiste font te geven
 .single .ihn-vonnis-kader .wp-block-heading {
     font-family: 'EB Garamond', Georgia, serif !important;
 }
+
+/* Submenu "Kleine lettertjes" */
+.ihn-nav-sub > .ihn-sub-toggle {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.25rem;
+    background: none;
+    border: none;
+    text-align: left;
+    font: inherit;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: var(--color-text);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ihn-submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 0.75rem;
+}
+
+.ihn-submenu li a {
+    font-size: 0.95rem;
+    padding: 0.2rem 1.25rem;
+}
+
+/* Submenu: hover, pijltje en animatie */
+.ihn-nav-sub > .ihn-sub-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ihn-nav-sub > .ihn-sub-toggle:hover {
+    background-color: var(--color-btn);
+    color: #ffffff;
+}
+
+.ihn-nav-sub > .ihn-sub-toggle::after {
+    content: '';
+    display: inline-block;
+    width: 0.45em;
+    height: 0.45em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.25s ease;
+    margin-right: 0.2rem;
+    flex-shrink: 0;
+}
+
+.ihn-nav-sub.is-sub-open > .ihn-sub-toggle::after {
+    transform: rotate(-135deg);
+}
+
+.ihn-submenu {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+    display: block;
+}
+
+.ihn-nav-sub.is-sub-open > .ihn-submenu {
+    max-height: 300px;
+    opacity: 1;
+}

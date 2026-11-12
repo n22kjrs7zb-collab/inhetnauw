@@ -86,6 +86,15 @@
                     hamburger.focus();
                 }
             });
+
+            document.querySelectorAll('.ihn-sub-toggle').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var open = btn.getAttribute('aria-expanded') === 'true';
+                    btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+                    btn.parentElement.classList.toggle('is-sub-open', !open);
+                });
+            });
         }
 
         // ============================================
