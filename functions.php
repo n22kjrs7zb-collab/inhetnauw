@@ -491,3 +491,67 @@ add_filter('the_content', function ($content) {
     }
     return $content;
 });
+
+add_action('wp_footer', function () {
+    if (!is_singular('post') || !has_category('verhalen')) {
+        return;
+    }
+    $url      = esc_url(get_permalink());
+    $titel    = esc_js(get_the_title());
+    $voorwaarden = esc_url(home_url('/algemene-voorwaarden'));
+    $share_url = get_permalink();
+    $share_title = get_the_title();
+    $share_text = ihn_samenvatting_tekst(get_the_ID())
+        . "\n\nLees " . $share_title . " op In Het Nauw: " . $share_url;
+    ?>
+    <div id="ihn-copy-popup" class="ihn-copy-popup" role="dialog" aria-modal="true" aria-labelledby="ihn-copy-titel" hidden>
+        <div class="ihn-copy-box">
+            <p id="ihn-copy-titel">De copyright voor de gekopieerde tekst ligt bij In het Nauw. Voor meer informatie, zie <a href="<?php echo $voorwaarden; ?>">de algemene voorwaarden</a>.</p>
+            <p>Je kan dit verhaal delen via diverse socials:</p>
+            <ul class="ihn-copy-socials ihn-story-sharing-buttons">
+                <li><a class="ihn-social-link" href="<?php echo esc_url('https://www.facebook.com/sharer/sharer.php?u=' . rawurlencode($share_url) . '&quote=' . rawurlencode($share_text)); ?>" target="_blank" rel="noopener noreferrer" aria-label="Deel op Facebook" title="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.8v8h3.4z"/></svg>
+                </a></li>
+                <li><a class="ihn-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                </a></li>
+                <li><a class="ihn-social-link" href="<?php echo esc_url('https://wa.me/?text=' . rawurlencode($share_text)); ?>" target="_blank" rel="noopener noreferrer" aria-label="Deel via WhatsApp" title="WhatsApp">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.7a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.5-4.9a8.4 8.4 0 1 1 16-3.9Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.2 7.8c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4 0 .6l-.5.7c-.2.2-.2.2 0 .6.5.8 1.2 1.5 2 2 .2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.1-.7 1.5-.5.5-1.2.7-2 .5-1.1-.2-2.4-.9-3.7-2.1-1.1-1-2-2.3-2.3-3.3-.4-1.1 0-1.9.6-2.4Z" fill="currentColor"/></svg>
+                </a></li>
+                <li><a class="ihn-social-link" href="<?php echo esc_url('mailto:?subject=' . rawurlencode($share_title) . '&body=' . rawurlencode($share_text)); ?>" aria-label="Deel via e-mail" title="E-mail">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a></li>
+                <li><a class="ihn-social-link" href="<?php echo esc_attr('sms:?&body=' . rawurlencode($share_text)); ?>" aria-label="Deel via iMessage" title="iMessage">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-5.5a7.5 7.5 0 1 1 17-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="11.5" r="1" fill="currentColor"/><circle cx="12.5" cy="11.5" r="1" fill="currentColor"/><circle cx="17" cy="11.5" r="1" fill="currentColor"/></svg>
+                </a></li>
+            </ul>
+            <button type="button" class="ihn-copy-sluit">Sluiten</button>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var popup = document.getElementById('ihn-copy-popup');
+        var voet = "\n\nDeze tekst is afkomstig van \"<?php echo $titel; ?>\", <?php echo $url; ?>, \u00A9 In het Nauw";
+        document.addEventListener('copy', function (e) {
+            var selectie = window.getSelection();
+            if (!selectie || selectie.isCollapsed) return;
+            popup.hidden = false;
+            if (e.clipboardData) {
+                e.preventDefault();
+                e.clipboardData.setData('text/plain', selectie.toString() + voet);
+            }
+        });
+
+        popup.querySelector('.ihn-copy-sluit').addEventListener('click', function () {
+            popup.hidden = true;
+        });
+        popup.addEventListener('click', function (e) {
+            if (e.target === popup) popup.hidden = true;
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') popup.hidden = true;
+        });
+    })();
+    </script>
+    <?php
+});

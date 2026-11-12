@@ -1056,3 +1056,58 @@ Correctie om titel van vonnis juiste font te geven
     max-height: 300px;
     opacity: 1;
 }
+
+/* Copy-popup */
+.ihn-copy-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1rem;
+}
+
+.ihn-copy-popup[hidden] {
+    display: none;
+}
+
+.ihn-copy-box {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-accent);
+    border-radius: 12px;
+    padding: 1.75rem;
+    max-width: 420px;
+    width: 100%;
+    font-family: 'Source Sans 3', sans-serif;
+    line-height: 1.5;
+}
+
+.ihn-copy-box a {
+    color: var(--color-accent);
+}
+
+.ihn-copy-socials {
+    list-style: none;
+    margin: 0.75rem 0 1.25rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.ihn-copy-socials a {
+    color: var(--color-text);
+    text-decoration: underline;
+}
+
+.ihn-copy-sluit {
+    background-color: var(--color-btn);
+    color: #ffffff;
+    border: none;
+    padding: 0.5em 1.2em;
+    cursor: pointer;
+    font-family: inherit;
+}
