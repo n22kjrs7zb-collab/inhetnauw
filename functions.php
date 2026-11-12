@@ -37,27 +37,43 @@ function ihn_enqueue_assets() {
         '1.0.0',
         true
     );
+
+    if (is_singular('post') && has_category('verhalen')) {
+        wp_enqueue_script(
+            'ihn-story-sharing',
+            get_theme_file_uri('assets/js/story-sharing.js'),
+            [],
+            filemtime(get_theme_file_path('assets/js/story-sharing.js')),
+            true
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'ihn_enqueue_assets');
 
 
 
 // Samenvatting: behoudt returns, zonder HTML-tags
-function ihn_samenvatting($post_id) {
+function ihn_samenvatting_tekst($post_id) {
     if (has_excerpt($post_id)) {
         $tekst = get_post_field('post_excerpt', $post_id);
     } else {
         $tekst = get_post_field('post_content', $post_id);
         $tekst = preg_replace('/<!--.*?-->/s', '', $tekst);
         $tekst = strip_shortcodes($tekst);
-        $tekst = wp_strip_all_tags($tekst);
     }
+    $tekst = preg_replace('/<br\s*\/?>|<\/(?:p|div|li|blockquote|h[1-6])\s*>/i', "\n", $tekst);
+    $tekst = wp_strip_all_tags($tekst);
+    $tekst = str_replace(["\r\n", "\r"], "\n", $tekst);
     $tekst = trim(preg_replace("/\n{3,}/", "\n\n", $tekst));
     if (mb_strlen($tekst) > 280) {
         $tekst = mb_substr($tekst, 0, 280);
         $tekst = preg_replace('/\s+\S*$/u', '', $tekst) . '…';
     }
-    return nl2br(esc_html($tekst));
+    return $tekst;
+}
+
+function ihn_samenvatting($post_id) {
+    return nl2br(esc_html(ihn_samenvatting_tekst($post_id)));
 }
 
 function ihn_logo_svg() {
@@ -115,6 +131,53 @@ add_filter('the_content', function ($content) {
         return ihn_leestijd_html(get_the_ID()) . $content;
     }
     return $content;
+});
+
+add_filter('the_content', function ($content) {
+    if (!is_singular('post') || !in_the_loop() || !is_main_query()
+        || !has_category('verhalen', get_the_ID())) {
+        return $content;
+    }
+
+    $url = get_permalink();
+    $title = get_the_title();
+    $share_text = ihn_samenvatting_tekst(get_the_ID())
+        . "\n\nLees " . $title . " op In Het Nauw: " . $url;
+
+    ob_start();
+    ?>
+    <nav class="ihn-story-sharing" aria-label="Deel dit verhaal">
+        <p class="ihn-story-sharing-title">Deel dit verhaal</p>
+        <div class="ihn-story-sharing-buttons">
+            <a class="ihn-social-link" href="<?php echo esc_url('https://www.facebook.com/sharer/sharer.php?u=' . rawurlencode($url) . '&quote=' . rawurlencode($share_text)); ?>"
+               target="_blank" rel="noopener noreferrer" aria-label="Deel op Facebook" title="Facebook">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.8v8h3.4z"/></svg>
+            </a>
+            <button class="ihn-social-link" type="button" data-share-image="<?php echo esc_attr(wp_json_encode([
+                'summary' => ihn_samenvatting_tekst(get_the_ID()),
+                'title' => $title,
+            ])); ?>"
+                    aria-label="Kopieer afbeelding voor Instagram" title="Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            </button>
+            <a href="<?php echo esc_attr('https://wa.me/?text=' . rawurlencode($share_text)); ?>"
+               class="ihn-social-link" target="_blank" rel="noopener noreferrer" aria-label="Deel via WhatsApp" title="WhatsApp">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.7a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.5-4.9a8.4 8.4 0 1 1 16-3.9Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.2 7.8c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4 0 .6l-.5.7c-.2.2-.2.4 0 .6.5.8 1.2 1.5 2 2 .2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.1-.7 1.5-.5.5-1.2.7-2 .5-1.1-.2-2.4-.9-3.7-2.1-1.1-1-2-2.3-2.3-3.3-.4-1.1 0-1.9.6-2.4Z" fill="currentColor"/></svg>
+            </a>
+            <a class="ihn-social-link" href="<?php echo esc_url('mailto:?subject=' . rawurlencode($title) . '&body=' . rawurlencode($share_text)); ?>"
+               aria-label="Deel via e-mail" title="E-mail">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="ihn-social-link" href="<?php echo esc_attr('sms:?&body=' . rawurlencode($share_text)); ?>"
+               aria-label="Deel via iMessage" title="iMessage">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-5.5a7.5 7.5 0 1 1 17-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="11.5" r="1" fill="currentColor"/><circle cx="12.5" cy="11.5" r="1" fill="currentColor"/><circle cx="17" cy="11.5" r="1" fill="currentColor"/></svg>
+            </a>
+        </div>
+        <p class="ihn-story-sharing-status" aria-live="polite"></p>
+    </nav>
+    <?php
+
+    return $content . ob_get_clean();
 });
 
 // Eén verhaal-kaart: samenvatting en verwijzing (geen titel, geen nummer)

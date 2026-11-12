@@ -570,6 +570,52 @@ p.has-drop-cap::first-letter {
     margin-bottom: 1.5em;
 }
 
+.ihn-story-sharing {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-accent);
+}
+
+.ihn-story-sharing-title {
+    margin: 0 0 0.75rem;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.ihn-story-sharing-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ihn-story-sharing-buttons .ihn-social-link {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.ihn-story-sharing-buttons .ihn-social-link svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ihn-story-sharing-buttons .ihn-social-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+}
+
+.ihn-story-sharing-status {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+}
+
 @media (max-width: 700px) {
     .single main {
         margin: 1.5rem auto;
