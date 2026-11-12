@@ -25,7 +25,9 @@ add_action('wp_head', function () {
 function ihn_enqueue_assets() {
     wp_enqueue_style(
         'ihn-style',
-        get_stylesheet_uri()
+        get_stylesheet_uri(),
+        [],
+        filemtime(get_theme_file_path('style.css'))
     );
 
     wp_enqueue_script(

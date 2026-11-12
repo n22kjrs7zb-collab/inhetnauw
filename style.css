@@ -281,7 +281,7 @@ p.has-drop-cap::first-letter {
     margin: 0;
     padding: 0.5rem 0;
     list-style: none;
-    background-color: var(--color-bg);
+    background-color: var(--color-card-bg);
     border: 1px solid var(--color-accent);
     z-index: 1000;
     font-family: 'Source Sans 3', sans-serif;
