@@ -50,6 +50,15 @@ function ihn_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'ihn_enqueue_assets');
 
+add_filter('body_class', function ($classes) {
+    if (is_singular('post') && has_category('verhalen', get_queried_object_id())
+        && !in_array('category-verhalen', $classes, true)) {
+        $classes[] = 'category-verhalen';
+    }
+
+    return $classes;
+});
+
 
 
 // Samenvatting: behoudt returns, zonder HTML-tags

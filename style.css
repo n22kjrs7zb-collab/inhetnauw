@@ -677,6 +677,14 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
     line-height: 1.2;
 }
 
+.single.category-verhalen .wp-block-post-content .wp-block-pullquote {
+    margin-right: -16rem;
+}
+
+.single.category-verhalen .wp-block-post-content .ihn-vonnis-kader {
+    margin-right: -3.15rem;
+}
+
 /* ============================================
    SCENEWISSELING
    ============================================ */
