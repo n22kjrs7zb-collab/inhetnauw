@@ -46,7 +46,7 @@ body {
 .ihn-logo {
     display: block;
     color: var(--color-text);
-    width: 270px;
+    width: 283.5px;
     height: auto;
 }
 
@@ -117,23 +117,22 @@ p.has-drop-cap::first-letter {
    HEADER
    ============================================ */
 
-.ihn-header {
-    display: flex;
-    flex-direction: row;
+header.ihn-header:not(.wp-block-group) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
     gap: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: max(1rem, calc((100% - 800px) / 2));
+    padding-right: max(1rem, calc((100% - 800px) / 2));
     border-bottom: 1px solid var(--color-accent);
     position: relative;
 }
 
-.ihn-header svg {
+header.ihn-header:not(.wp-block-group) svg {
     color: var(--color-text);
-    width: 270px;
+    width: 283.5px;
     height: auto;
     display: block;
 }
@@ -142,18 +141,19 @@ p.has-drop-cap::first-letter {
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    justify-self: start;
     color: inherit;
 }
 
 .ihn-header-center {
-    flex: 1;
+    grid-column: 2;
     display: flex;
     justify-content: center;
 }
 
 /* Header, footer en bijzondere items in EB Garamond */
-.ihn-header,
-.ihn-header *,
+header.ihn-header:not(.wp-block-group),
+header.ihn-header:not(.wp-block-group) *,
 .ihn-footer,
 .ihn-footer * {
     font-family: 'EB Garamond', Georgia, serif !important;
@@ -168,7 +168,6 @@ p.has-drop-cap::first-letter {
     flex-direction: column;
     align-items: center;
     gap: 0.1rem;
-    margin-left: 3rem;
 }
 
 .ihn-doneer-pre {
@@ -206,17 +205,17 @@ p.has-drop-cap::first-letter {
 
 .ihn-trigger-warning {
     position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 4rem;
-    right: 4rem;
+    top: calc(100% + 0.75rem);
+    left: calc(50% + 1rem);
+    right: max(1rem, calc((100% - 800px) / 2));
     font-size: 0.75rem;
     opacity: 0.6;
-    text-align: center;
+    text-align: right;
     font-style: italic;
 }
 
-.ihn-header:has(.ihn-trigger-warning) {
-    margin-bottom: 2rem;
+header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
+    margin-bottom: 3rem;
 }
 
 .ihn-trigger-warning p {
@@ -232,13 +231,15 @@ p.has-drop-cap::first-letter {
 .ihn-hamburger-nav {
     position: relative;
     flex-shrink: 0;
+    grid-column: 3;
+    justify-self: end;
 }
 
 .ihn-hamburger-btn {
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0.4rem;
+    padding: 0.4rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -632,10 +633,13 @@ p.has-drop-cap::first-letter {
    ============================================ */
 
 .ihn-leestijd,
-.ihn-trigger-warning,
-.ihn-trigger-warning p,
 .ihn-doneer-pre {
     font-family: 'EB Garamond', Georgia, serif !important;
+}
+
+.ihn-trigger-warning,
+.ihn-trigger-warning p {
+    font-family: 'Source Sans 3', sans-serif !important;
 }
 
 .ihn-leestijd {
@@ -946,7 +950,11 @@ p.has-drop-cap::first-letter {
         display: none;
     }
 
-    .ihn-header:has(.ihn-trigger-warning) {
+    .ihn-trigger-warning {
+        display: none;
+    }
+
+    header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
         margin-bottom: 0;
     }
 

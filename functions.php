@@ -409,6 +409,21 @@ add_filter('render_block', function ($block_content, $block) {
     return preg_replace('/(<h1\b[^>]*>)/i', '$1' . $badge, $block_content, 1);
 }, 10, 2);
 
+// Houd het archief-label gelijk, ook als de header-template in WordPress is opgeslagen.
+add_filter('render_block', function ($block_content, $block) {
+    if (($block['blockName'] ?? '') !== 'core/template-part'
+        || ($block['attrs']['slug'] ?? '') !== 'header') {
+        return $block_content;
+    }
+
+    return preg_replace(
+        '/(<a\b(?=[^>]*\bhref=["\']\/artikelen["\'])[^>]*>).*?(<\/a>)/is',
+        '$1Archief$2',
+        $block_content,
+        1
+    );
+}, 10, 2);
+
 
 function ihn_gerelateerde_verhalen() {
     $current_post_id = get_the_ID();
