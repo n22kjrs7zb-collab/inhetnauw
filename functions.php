@@ -30,6 +30,13 @@ function ihn_enqueue_assets() {
         filemtime(get_theme_file_path('style.css'))
     );
 
+    wp_enqueue_style(
+        'ihn-summary-palette',
+        get_theme_file_uri('assets/css/summary-palette.css'),
+        ['ihn-style'],
+        filemtime(get_theme_file_path('assets/css/summary-palette.css'))
+    );
+
     wp_enqueue_script(
         'ihn-theme-toggle',
         get_theme_file_uri('assets/js/theme-toggle.js'),
@@ -49,6 +56,7 @@ function ihn_enqueue_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'ihn_enqueue_assets');
+add_editor_style('assets/css/summary-palette.css');
 
 add_filter('body_class', function ($classes) {
     if (is_singular('post') && has_category('verhalen', get_queried_object_id())
@@ -61,9 +69,12 @@ add_filter('body_class', function ($classes) {
 
 
 
-// Samenvatting: behoudt returns, zonder HTML-tags
+// Samenvattingstekst voor deelacties en tekstuele toepassingen.
 function ihn_samenvatting_tekst($post_id) {
-    if (has_excerpt($post_id)) {
+    $opgemaakte_samenvatting = get_post_meta($post_id, '_ihn_samenvatting', true);
+    if ($opgemaakte_samenvatting !== '') {
+        $tekst = $opgemaakte_samenvatting;
+    } elseif (has_excerpt($post_id)) {
         $tekst = get_post_field('post_excerpt', $post_id);
     } else {
         $tekst = get_post_field('post_content', $post_id);
@@ -82,8 +93,110 @@ function ihn_samenvatting_tekst($post_id) {
 }
 
 function ihn_samenvatting($post_id) {
+    $opgemaakte_samenvatting = get_post_meta($post_id, '_ihn_samenvatting', true);
+    if ($opgemaakte_samenvatting !== '') {
+        return wp_kses_post($opgemaakte_samenvatting);
+    }
+
     return nl2br(esc_html(ihn_samenvatting_tekst($post_id)));
 }
+
+function ihn_samenvatting_meta_box() {
+    add_meta_box(
+        'ihn-samenvatting',
+        'Samenvatting voor tegels',
+        'ihn_samenvatting_meta_box_html',
+        'post',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes_post', 'ihn_samenvatting_meta_box');
+
+function ihn_samenvatting_meta_box_html($post) {
+    wp_nonce_field('ihn_samenvatting_opslaan', 'ihn_samenvatting_nonce');
+    $samenvatting = get_post_meta($post->ID, '_ihn_samenvatting', true);
+    ?>
+    <div class="ihn-summary-editor">
+        <div class="ihn-summary-editor-toolbar" role="toolbar" aria-label="Tekstopmaak">
+            <button type="button" class="button" data-command="bold" aria-label="Vet" title="Vet"><strong>B</strong></button>
+            <button type="button" class="button" data-command="italic" aria-label="Cursief" title="Cursief"><em>I</em></button>
+            <button type="button" class="button" data-command="underline" aria-label="Onderstrepen" title="Onderstrepen"><u>U</u></button>
+            <button type="button" class="button" data-command="superscript" aria-label="Superscript" title="Superscript">x<sup>2</sup></button>
+            <button type="button" class="button" data-command="subscript" aria-label="Subscript" title="Subscript">x<sub>2</sub></button>
+            <?php
+            $kleuren = [
+                'oceaan' => 'Oceaan',
+                'koraal' => 'Koraal',
+                'bos' => 'Bos',
+                'bes' => 'Bes',
+            ];
+            foreach ($kleuren as $kleur => $naam) :
+                ?>
+                <button type="button" class="button ihn-summary-color-button" data-color-class="ihn-samenvatting-kleur-<?php echo esc_attr($kleur); ?>" aria-label="Kleur: <?php echo esc_attr($naam); ?>" title="<?php echo esc_attr($naam); ?>">
+                    <span class="ihn-samenvatting-kleur-<?php echo esc_attr($kleur); ?>" aria-hidden="true"></span>
+                </button>
+            <?php endforeach; ?>
+        </div>
+        <div id="ihn_summary_editor" class="ihn-summary-editor-content" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Samenvatting voor tegels"><?php echo wp_kses_post($samenvatting); ?></div>
+        <textarea id="ihn_samenvatting" name="ihn_samenvatting" hidden><?php echo esc_textarea($samenvatting); ?></textarea>
+    </div>
+    <?php
+}
+
+function ihn_samenvatting_editor_assets($hook_suffix) {
+    $screen = get_current_screen();
+    if (!$screen || $screen->base !== 'post' || $screen->post_type !== 'post') {
+        return;
+    }
+
+    wp_enqueue_style(
+        'ihn-summary-editor',
+        get_theme_file_uri('assets/css/summary-palette.css'),
+        [],
+        filemtime(get_theme_file_path('assets/css/summary-palette.css'))
+    );
+    wp_enqueue_script(
+        'ihn-summary-editor',
+        get_theme_file_uri('assets/js/summary-editor.js'),
+        [],
+        filemtime(get_theme_file_path('assets/js/summary-editor.js')),
+        true
+    );
+}
+add_action('admin_enqueue_scripts', 'ihn_samenvatting_editor_assets');
+
+function ihn_samenvatting_opslaan($post_id) {
+    if (!isset($_POST['ihn_samenvatting_nonce'])
+        || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ihn_samenvatting_nonce'])), 'ihn_samenvatting_opslaan')
+        || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        || wp_is_post_revision($post_id)
+        || !current_user_can('edit_post', $post_id)
+        || !isset($_POST['ihn_samenvatting'])) {
+        return;
+    }
+
+    $samenvatting = wp_kses_post(wp_unslash($_POST['ihn_samenvatting']));
+    if ($samenvatting === '') {
+        delete_post_meta($post_id, '_ihn_samenvatting');
+    } else {
+        update_post_meta($post_id, '_ihn_samenvatting', $samenvatting);
+    }
+
+    $platte_tekst = preg_replace('/<br\s*\/?>|<\/\s*(?:p|div|li|blockquote|h[1-6])\s*>/i', "\n", $samenvatting);
+    $platte_tekst = html_entity_decode(wp_strip_all_tags($platte_tekst), ENT_QUOTES, get_bloginfo('charset'));
+    $platte_tekst = trim(preg_replace("/\n{3,}/", "\n\n", str_replace(["\r\n", "\r"], "\n", $platte_tekst)));
+
+    if (get_post_field('post_excerpt', $post_id) !== $platte_tekst) {
+        remove_action('save_post_post', 'ihn_samenvatting_opslaan');
+        wp_update_post([
+            'ID' => $post_id,
+            'post_excerpt' => $platte_tekst,
+        ]);
+        add_action('save_post_post', 'ihn_samenvatting_opslaan');
+    }
+}
+add_action('save_post_post', 'ihn_samenvatting_opslaan');
 
 function ihn_logo_svg() {
     $pad = get_theme_file_path('assets/images/logo-inline.svg.php');
@@ -194,7 +307,7 @@ function ihn_verhaal_kaart($post_id, $nummer, $klasse) {
     ob_start();
     ?>
     <div class="ihn-verhaal <?php echo esc_attr($klasse); ?>">
-        <p class="verhaal-excerpt"><?php echo ihn_samenvatting($post_id); ?></p>
+        <div class="verhaal-excerpt"><?php echo ihn_samenvatting($post_id); ?></div>
         <div class="verhaal-lees-verder">
             Lees <a href="<?php echo esc_url(get_permalink($post_id)); ?>"><em><?php echo esc_html(get_the_title($post_id)); ?></em></a>
         </div>
@@ -625,7 +738,7 @@ function ihn_gerelateerde_verhalen() {
         <div class="ihn-gerelateerde-grid">
             <?php foreach ($verhalen as $post) : setup_postdata($post); ?>
             <div class="ihn-verhaal ihn-verhaal-2">
-                <p class="verhaal-excerpt"><?php echo ihn_samenvatting($post->ID); ?></p>
+                <div class="verhaal-excerpt"><?php echo ihn_samenvatting($post->ID); ?></div>
                 <p class="verhaal-lees-verder">
                     Lees <a href="<?php echo esc_url(get_permalink($post->ID)); ?>"><em><?php echo esc_html(get_the_title($post->ID)); ?></em></a>
                 </p>
