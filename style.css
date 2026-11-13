@@ -409,11 +409,11 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
 
 .ihn-uitspraak-card {
     grid-column: 3;
-    grid-row: 1 / 3;
-    min-height: 140px;
-    max-height: 270px;
-    padding: 1.5rem;
-    margin: 0;
+    grid-row: 1;
+    width: 220%;
+    height: 155px;
+    padding: 1rem;
+    margin: 0 0 -3px;
     border-radius: 20px;
     background-color: var(--color-uitspraak-bg);
     color: #e8e0d0;
@@ -422,8 +422,9 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
     flex-direction: column;
     gap: 0;
     overflow-y: auto;
-    align-self: start;
-    justify-self: end;
+    align-self: end;
+    justify-self: start;
+    transform: translateX(calc(-27.3% - 2.5rem));
 }
 
 .ihn-uitspraak-card h2,
@@ -434,29 +435,29 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
 
 .uitspraak-label {
     font-weight: 700;
-    font-size: 1rem;
-    margin: 0 0 1.1em 0;
+    font-size: 0.95rem;
+    margin: 0 0 0.35em 0;
     line-height: 1.3;
 }
 
 .uitspraak-content {
-    font-size: 0.9rem;
-    line-height: 1.75;
+    font-size: 0.8rem;
+    line-height: 1.3;
 }
 
 .uitspraak-content p:first-child {
-    margin: 0 0 0.3em 0;
+    margin: 0 0 0.15em 0;
     font-style: normal;
 }
 
 .uitspraak-content p:nth-child(2) {
     font-style: italic;
-    margin: 0 0 0.8em 0;
+    margin: 0 0 0.3em 0;
 }
 
 .uitspraak-content p:nth-child(n+3) {
     font-style: normal;
-    margin: 0 0 0.75em 0;
+    margin: 0 0 0.35em 0;
 }
 
 .uitspraak-content p:last-child {
