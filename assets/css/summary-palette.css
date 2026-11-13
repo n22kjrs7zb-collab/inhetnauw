@@ -1,68 +1,17 @@
-.ihn-samenvatting-kleur-oceaan {
-    color: #fff;
-    background-color: #2f4a7a;
-    padding: 0.05em 0.16em;
-}
+.ihn-samenvatting-kleur-oceaan { color: #fff; background-color: #2f4a7a; }
+.ihn-samenvatting-kleur-koraal { color: #1c1c1c; background-color: #ebe6dc; }
+.ihn-samenvatting-kleur-bos { color: #2563EB; background-color: #fff; }
+.ihn-samenvatting-kleur-bes { color: #fff; background-color: #1c1c1c; }
 
-.ihn-samenvatting-kleur-koraal {
-    color: #542917;
-    background-color: #f2cdbd;
-    padding: 0.05em 0.16em;
-}
+.ihn-samenvatting-tekst-inkt { color: #1c1c1c; }
+.ihn-samenvatting-tekst-marine { color: #2f4a7a; }
+.ihn-samenvatting-tekst-accent { color: #2563EB; }
+.ihn-samenvatting-tekst-wit { color: #fff; }
 
-.ihn-samenvatting-kleur-bos {
-    color: #163a2b;
-    background-color: #c9e5d2;
-    padding: 0.05em 0.16em;
-}
-
-.ihn-samenvatting-kleur-bes {
-    color: #612333;
-    background-color: #f4d0d8;
-    padding: 0.05em 0.16em;
-}
-
-html[data-theme="dark"] .ihn-samenvatting-kleur-oceaan {
-    color: #f3f5ff;
-    background-color: #25477f;
-}
-
-html[data-theme="dark"] .ihn-samenvatting-kleur-koraal {
-    color: #ffe4d1;
-    background-color: #63371f;
-}
-
-html[data-theme="dark"] .ihn-samenvatting-kleur-bos {
-    color: #ddf5e4;
-    background-color: #214d39;
-}
-
-html[data-theme="dark"] .ihn-samenvatting-kleur-bes {
-    color: #ffe3e9;
-    background-color: #682c3f;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .ihn-samenvatting-kleur-oceaan {
-        color: #f3f5ff;
-        background-color: #25477f;
-    }
-
-    html:not([data-theme="light"]) .ihn-samenvatting-kleur-koraal {
-        color: #ffe4d1;
-        background-color: #63371f;
-    }
-
-    html:not([data-theme="light"]) .ihn-samenvatting-kleur-bos {
-        color: #ddf5e4;
-        background-color: #214d39;
-    }
-
-    html:not([data-theme="light"]) .ihn-samenvatting-kleur-bes {
-        color: #ffe3e9;
-        background-color: #682c3f;
-    }
-}
+.ihn-samenvatting-achtergrond-pagina { background-color: #fff; }
+.ihn-samenvatting-achtergrond-kaart { background-color: #ebe6dc; }
+.ihn-samenvatting-achtergrond-marine { background-color: #2f4a7a; }
+.ihn-samenvatting-achtergrond-inkt { background-color: #1c1c1c; }
 
 .ihn-summary-editor-toolbar {
     display: flex;
@@ -78,11 +27,50 @@ html[data-theme="dark"] .ihn-samenvatting-kleur-bes {
     padding: 3px 6px;
 }
 
+.ihn-summary-color-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    padding: 0 4px;
+    border: 0;
+}
+
+.ihn-summary-color-group legend {
+    float: left;
+    margin-right: 4px;
+    font-size: 11px;
+}
+
 .ihn-summary-color-button span {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 16px;
     height: 16px;
 }
+
+.ihn-summary-swatch-text {
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ihn-summary-swatch-background {
+    border: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.ihn-summary-swatch-inkt { background-color: #1c1c1c; }
+.ihn-summary-swatch-marine { background-color: #2f4a7a; }
+.ihn-summary-swatch-accent { background-color: #2563EB; }
+.ihn-summary-swatch-wit { background-color: #fff; }
+.ihn-summary-swatch-pagina { background-color: #fff; }
+.ihn-summary-swatch-kaart { background-color: #ebe6dc; }
+
+.ihn-summary-swatch-text.ihn-summary-swatch-inkt { color: #1c1c1c; background-color: #fff; }
+.ihn-summary-swatch-text.ihn-summary-swatch-marine { color: #2f4a7a; background-color: #fff; }
+.ihn-summary-swatch-text.ihn-summary-swatch-accent { color: #2563EB; background-color: #fff; }
+.ihn-summary-swatch-text.ihn-summary-swatch-wit { color: #fff; background-color: #1c1c1c; }
 
 .ihn-summary-editor-content {
     min-height: 150px;

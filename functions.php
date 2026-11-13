@@ -124,19 +124,49 @@ function ihn_samenvatting_meta_box_html($post) {
             <button type="button" class="button" data-command="underline" aria-label="Onderstrepen" title="Onderstrepen"><u>U</u></button>
             <button type="button" class="button" data-command="superscript" aria-label="Superscript" title="Superscript">x<sup>2</sup></button>
             <button type="button" class="button" data-command="subscript" aria-label="Subscript" title="Subscript">x<sub>2</sub></button>
+            <label class="screen-reader-text" for="ihn-summary-font-size">Fontgrootte</label>
+            <select id="ihn-summary-font-size" data-font-size aria-label="Fontgrootte">
+                <option value="">Fontgrootte</option>
+                <option value="12px">12 px</option>
+                <option value="14px">14 px</option>
+                <option value="16px">16 px</option>
+                <option value="18px">18 px</option>
+                <option value="24px">24 px</option>
+                <option value="32px">32 px</option>
+            </select>
+            <button type="button" class="button" data-baseline-shift="0.7em" aria-label="1 teken hoger" title="1 teken hoger">↑</button>
+            <button type="button" class="button" data-baseline-shift="-0.7em" aria-label="1 teken lager" title="1 teken lager">↓</button>
+            <button type="button" class="button" data-reset-format aria-label="Opmaak wissen" title="Opmaak wissen">Tx</button>
             <?php
-            $kleuren = [
-                'oceaan' => 'Oceaan',
-                'koraal' => 'Koraal',
-                'bos' => 'Bos',
-                'bes' => 'Bes',
+            $tekstkleuren = [
+                'inkt' => 'Tekst',
+                'marine' => 'Marine',
+                'accent' => 'Accent',
+                'wit' => 'Wit',
             ];
-            foreach ($kleuren as $kleur => $naam) :
-                ?>
-                <button type="button" class="button ihn-summary-color-button" data-color-class="ihn-samenvatting-kleur-<?php echo esc_attr($kleur); ?>" aria-label="Kleur: <?php echo esc_attr($naam); ?>" title="<?php echo esc_attr($naam); ?>">
-                    <span class="ihn-samenvatting-kleur-<?php echo esc_attr($kleur); ?>" aria-hidden="true"></span>
-                </button>
-            <?php endforeach; ?>
+            $achtergrondkleuren = [
+                'pagina' => 'Pagina',
+                'kaart' => 'Kaart',
+                'marine' => 'Marine',
+                'inkt' => 'Inkt',
+            ];
+            ?>
+            <fieldset class="ihn-summary-color-group">
+                <legend>Tekstkleur</legend>
+                <?php foreach ($tekstkleuren as $kleur => $naam) : ?>
+                    <button type="button" class="button ihn-summary-color-button" data-color-kind="text" data-color-class="ihn-samenvatting-tekst-<?php echo esc_attr($kleur); ?>" aria-label="Tekstkleur: <?php echo esc_attr($naam); ?>" title="Tekstkleur: <?php echo esc_attr($naam); ?>">
+                        <span class="ihn-summary-swatch-text ihn-summary-swatch-<?php echo esc_attr($kleur); ?>" aria-hidden="true">A</span>
+                    </button>
+                <?php endforeach; ?>
+            </fieldset>
+            <fieldset class="ihn-summary-color-group">
+                <legend>Achtergrondkleur</legend>
+                <?php foreach ($achtergrondkleuren as $kleur => $naam) : ?>
+                    <button type="button" class="button ihn-summary-color-button" data-color-kind="background" data-color-class="ihn-samenvatting-achtergrond-<?php echo esc_attr($kleur); ?>" aria-label="Achtergrondkleur: <?php echo esc_attr($naam); ?>" title="Achtergrondkleur: <?php echo esc_attr($naam); ?>">
+                        <span class="ihn-summary-swatch-background ihn-summary-swatch-<?php echo esc_attr($kleur); ?>" aria-hidden="true"></span>
+                    </button>
+                <?php endforeach; ?>
+            </fieldset>
         </div>
         <div id="ihn_summary_editor" class="ihn-summary-editor-content" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Samenvatting voor tegels"><?php echo wp_kses_post($samenvatting); ?></div>
         <textarea id="ihn_samenvatting" name="ihn_samenvatting" hidden><?php echo esc_textarea($samenvatting); ?></textarea>
