@@ -151,12 +151,15 @@ header.ihn-header:not(.wp-block-group) svg {
     justify-content: center;
 }
 
-/* Header, footer en bijzondere items in EB Garamond */
+/* Header en bijzondere items in EB Garamond */
 header.ihn-header:not(.wp-block-group),
-header.ihn-header:not(.wp-block-group) *,
+header.ihn-header:not(.wp-block-group) * {
+    font-family: 'EB Garamond', Georgia, serif !important;
+}
+
 .ihn-footer,
 .ihn-footer * {
-    font-family: 'EB Garamond', Georgia, serif !important;
+    font-family: 'Source Sans 3', sans-serif !important;
 }
 
 /* ============================================
