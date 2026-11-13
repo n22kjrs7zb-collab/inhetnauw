@@ -206,12 +206,11 @@ header.ihn-header:not(.wp-block-group) *,
 .ihn-trigger-warning {
     position: absolute;
     top: calc(100% + 0.75rem);
-    left: calc(50% + 1rem);
+    left: calc(30% + 1rem);
     right: max(1rem, calc((100% - 800px) / 2));
     font-size: 0.75rem;
     opacity: 0.6;
     text-align: right;
-    font-style: italic;
 }
 
 header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
@@ -631,12 +630,11 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
 /* ============================================
    LEESTIJD (naast verhaal, rechts)
    ============================================ */
-
-.ihn-leestijd,
 .ihn-doneer-pre {
     font-family: 'EB Garamond', Georgia, serif !important;
 }
 
+.ihn-leestijd,
 .ihn-trigger-warning,
 .ihn-trigger-warning p {
     font-family: 'Source Sans 3', sans-serif !important;
