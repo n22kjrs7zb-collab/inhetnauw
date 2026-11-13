@@ -536,6 +536,10 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
     color: var(--color-text) !important;
 }
 
+.single.category-verhalen .wp-block-post-title {
+    font-size: 2.6rem;
+}
+
 .single .verhaal-nummer-single {
     display: inline-flex;
     align-items: center;
@@ -549,9 +553,7 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
     font-weight: 700;
     line-height: 1;
     flex-shrink: 0;
-    position: relative;
-    top: -1px !important;
-    margin-right: 0.75rem;
+    margin-right: 0;
 }
 
 .single .wp-block-post-meta {
@@ -625,6 +627,10 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
 
     .single .wp-block-post-title {
         font-size: 1.5rem;
+    }
+
+    .single.category-verhalen .wp-block-post-title {
+        font-size: 1.95rem;
     }
 }
 
