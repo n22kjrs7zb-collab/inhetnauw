@@ -939,6 +939,46 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
     text-align: right;
 }
 
+.ihn-archief-link {
+    margin: 2rem 0 0;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.1rem;
+}
+
+.ihn-archief-link a,
+.ihn-archief-categorie a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.ihn-archief-link a:hover,
+.ihn-archief-categorie a:hover {
+    text-decoration: underline;
+}
+
+.ihn-archief-categorieen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 2rem;
+}
+
+.ihn-archief-categorie h2 {
+    margin-top: 0;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--color-accent);
+}
+
+.ihn-archief-categorie ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ihn-archief-categorie li + li {
+    margin-top: 0.65rem;
+}
+
 .ihn-copyright {
     font-size: 0.85rem;
     line-height: 1.6;

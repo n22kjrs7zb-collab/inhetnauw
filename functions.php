@@ -249,9 +249,141 @@ function ihn_homepage_shortcode() {
         </div>
         <?php endif; ?>
     </div>
+    <?php echo ihn_archief_link(); ?>
     <?php
     return ob_get_clean();
 }
+
+function ihn_archief_link() {
+    return '<p class="ihn-archief-link"><a href="' . esc_url(home_url('/artikelen')) . '">Lees alle verhalen in het archief</a></p>';
+}
+
+function ihn_archief_html() {
+    $categories = get_categories([
+        'hide_empty' => true,
+        'orderby'    => 'name',
+        'order'      => 'ASC',
+    ]);
+
+    if (empty($categories)) {
+        return '<p>Er zijn nog geen artikelen gepubliceerd.</p>';
+    }
+
+    ob_start();
+    ?>
+    <div class="ihn-archief-categorieen">
+        <?php foreach ($categories as $category) :
+            $articles = get_posts([
+                'category'       => $category->term_id,
+                'posts_per_page' => -1,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+            ]);
+            if (empty($articles)) {
+                continue;
+            }
+            ?>
+            <section class="ihn-archief-categorie">
+                <h2><?php echo esc_html($category->name); ?></h2>
+                <ul>
+                    <?php foreach ($articles as $article) :
+                        $title = get_the_title($article) ?: 'Zonder titel';
+                        ?>
+                        <li><a href="<?php echo esc_url(get_permalink($article)); ?>"><?php echo esc_html($title); ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </section>
+        <?php endforeach; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+add_filter('query_vars', function ($query_vars) {
+    $query_vars[] = 'ihn_archief';
+    return $query_vars;
+});
+
+add_action('parse_request', function ($wp) {
+    if (trim($wp->request, '/') === 'artikelen' && !get_page_by_path('artikelen')) {
+        $wp->query_vars['ihn_archief'] = '1';
+        unset($wp->query_vars['pagename']);
+    }
+});
+
+add_action('template_redirect', function () {
+    global $wp;
+
+    if (!is_404() || trim($wp->request, '/') !== 'verhalen' || get_page_by_path('verhalen')) {
+        return;
+    }
+
+    $category = get_category_by_slug('verhalen');
+    if ($category) {
+        wp_safe_redirect(get_category_link($category), 302);
+        exit;
+    }
+});
+
+add_filter('pre_handle_404', function ($preempt, $query) {
+    if ($query->get('ihn_archief')) {
+        $query->is_404 = false;
+        return true;
+    }
+
+    return $preempt;
+}, 10, 2);
+
+add_filter('template_include', function ($template) {
+    if (get_query_var('ihn_archief')) {
+        return get_theme_file_path('templates/archive-artikelen.php');
+    }
+
+    return $template;
+});
+
+add_filter('pre_get_document_title', function ($title) {
+    if (get_query_var('ihn_archief')) {
+        return 'Archief – ' . get_bloginfo('name');
+    }
+
+    return $title;
+});
+
+add_filter('the_content', function ($content) {
+    if (!in_the_loop() || !is_main_query()) {
+        return $content;
+    }
+
+    if (is_page('artikelen')) {
+        return ihn_archief_html();
+    }
+
+    if (is_page('verhalen')) {
+        return $content . ihn_archief_link();
+    }
+
+    return $content;
+}, 20);
+
+add_filter('render_block', function ($block_content, $block) {
+    $block_name = $block['blockName'] ?? '';
+
+    if (is_page('artikelen') && $block_name === 'core/post-title') {
+        return preg_replace(
+            '/(<h[1-6]\b[^>]*>).*?(<\/h[1-6]>)/is',
+            '$1Archief$2',
+            $block_content,
+            1
+        );
+    }
+
+    if (is_category('verhalen') && $block_name === 'core/post-template') {
+        return $block_content . ihn_archief_link();
+    }
+
+    return $block_content;
+}, 20, 2);
 
 
 
@@ -463,6 +595,7 @@ function ihn_gerelateerde_verhalen() {
             </div>
             <?php endforeach; wp_reset_postdata(); ?>
         </div>
+        <?php echo ihn_archief_link(); ?>
     </div>
     <?php
     return ob_get_clean();
