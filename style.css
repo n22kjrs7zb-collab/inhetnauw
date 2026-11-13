@@ -414,7 +414,7 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
     grid-column: 3;
     grid-row: 1;
     width: 220%;
-    height: 155px;
+    height: auto;
     padding: 1rem;
     margin: 0 0 -3px;
     border-radius: 20px;
@@ -451,20 +451,39 @@ header.ihn-header:not(.wp-block-group):has(.ihn-trigger-warning) {
 .uitspraak-content p:first-child {
     margin: 0 0 0.15em 0;
     font-style: normal;
+    font-weight: 400;
+
 }
 
 .uitspraak-content p:nth-child(2) {
-    font-style: italic;
-    margin: 0 0 0.3em 0;
+    font-style: normal;
+    margin: 0 0 0.6em 0;
+    font-weight: 400;
 }
 
 .uitspraak-content p:nth-child(n+3) {
+    font-size: 1.05rem;
+    line-height: 1.45;
     font-style: normal;
-    margin: 0 0 0.35em 0;
 }
 
-.uitspraak-content p:last-child {
+/* Laatste blok: italic in dezelfde grotere font */
+.uitspraak-content p:last-of-type {
+    font-size: 1.05rem;
+    font-style: italic;
     margin-bottom: 0;
+}
+
+.ihn-uitspraak-meer {
+    margin: 0.6rem 0 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.ihn-uitspraak-meer a {
+    color: var(--color-text);
+    text-decoration: underline;
 }
 
 /* ============================================
@@ -1175,4 +1194,22 @@ Correctie om titel van vonnis juiste font te geven
     padding: 0.5em 1.2em;
     cursor: pointer;
     font-family: inherit;
+}
+
+.ihn-archief-volledig {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    max-width: 680px;
+    margin: 3rem auto;
+}
+
+.ihn-archief-item {
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2rem;
+}
+
+.ihn-archief-item .uitspraak-content {
+    font-size: 1rem;
+    line-height: 1.6;
 }

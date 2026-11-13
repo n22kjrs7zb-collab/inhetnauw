@@ -234,6 +234,9 @@ function ihn_homepage_shortcode() {
             <div class="uitspraak-content">
                 <?php echo apply_filters('the_content', $u->post_content); ?>
             </div>
+            <p class="ihn-uitspraak-meer">
+                <a href="<?php echo esc_url(home_url('/de-uitspraak')); ?>">Lees meer uitspraken</a>
+            </p>
         </div>
         <?php endif; ?>
 
@@ -258,46 +261,80 @@ function ihn_archief_link() {
     return '<p class="ihn-archief-link"><a href="' . esc_url(home_url('/artikelen')) . '">Lees alle verhalen in het archief</a></p>';
 }
 
-function ihn_archief_html() {
-    $categories = get_categories([
-        'hide_empty' => true,
-        'orderby'    => 'name',
-        'order'      => 'ASC',
+// Verhalen: alleen titels met links
+function ihn_archief_verhalen() {
+    $category = get_category_by_slug('verhalen');
+    if (!$category) {
+        return '<p>Er zijn nog geen verhalen gepubliceerd.</p>';
+    }
+    $articles = get_posts([
+        'category'       => $category->term_id,
+        'posts_per_page' => -1,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ]);
+    if (empty($articles)) {
+        return '<p>Er zijn nog geen verhalen gepubliceerd.</p>';
+    }
+    ob_start();
+    ?>
+    <ul class="ihn-archief-lijst">
+        <?php foreach ($articles as $article) : ?>
+            <li><a href="<?php echo esc_url(get_permalink($article)); ?>"><?php echo esc_html(get_the_title($article)); ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+    <?php
+    return ob_get_clean();
+}
+
+// Uitspraken: alle artikelen volledig, onder elkaar
+function ihn_archief_uitspraken() {
+    $category = get_category_by_slug('uitspraak');
+    if (!$category) {
+        return '<p>Er zijn nog geen uitspraken gepubliceerd.</p>';
+    }
+
+    $articles = get_posts([
+        'category'       => $category->term_id,
+        'posts_per_page' => -1,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
     ]);
 
-    if (empty($categories)) {
-        return '<p>Er zijn nog geen artikelen gepubliceerd.</p>';
+    if (empty($articles)) {
+        return '<p>Er zijn nog geen uitspraken gepubliceerd.</p>';
     }
 
     ob_start();
     ?>
-    <div class="ihn-archief-categorieen">
-        <?php foreach ($categories as $category) :
-            $articles = get_posts([
-                'category'       => $category->term_id,
-                'posts_per_page' => -1,
-                'orderby'        => 'date',
-                'order'          => 'DESC',
-            ]);
-            if (empty($articles)) {
-                continue;
-            }
-            ?>
-            <section class="ihn-archief-categorie">
-                <h2><?php echo esc_html($category->name); ?></h2>
-                <ul>
-                    <?php foreach ($articles as $article) :
-                        $title = get_the_title($article) ?: 'Zonder titel';
-                        ?>
-                        <li><a href="<?php echo esc_url(get_permalink($article)); ?>"><?php echo esc_html($title); ?></a></li>
-                    <?php endforeach; ?>
-                </ul>
-            </section>
+    <div class="ihn-archief-volledig">
+        <?php foreach ($articles as $article) : ?>
+            <article class="ihn-archief-item">
+                <div class="uitspraak-content">
+                    <?php echo wpautop(do_shortcode($article->post_content)); ?>
+                </div>
+            </article>
         <?php endforeach; ?>
     </div>
     <?php
     return ob_get_clean();
 }
+
+add_filter('the_content', function ($content) {
+    if (!in_the_loop() || !is_main_query()) {
+        return $content;
+    }
+    if (is_page('artikelen')) {
+        return ihn_archief_verhalen();
+    }
+    if (is_page('de-uitspraak')) {
+        return ihn_archief_uitspraken();
+    }
+    if (is_page('verhalen')) {
+        return $content . ihn_archief_link();
+    }
+    return $content;
+}, 20);
 
 add_filter('query_vars', function ($query_vars) {
     $query_vars[] = 'ihn_archief';
@@ -354,15 +391,15 @@ add_filter('the_content', function ($content) {
     if (!in_the_loop() || !is_main_query()) {
         return $content;
     }
-
     if (is_page('artikelen')) {
-        return ihn_archief_html();
+        return ihn_archief_verhalen();
     }
-
+    if (is_page('de-uitspraak')) {
+        return ihn_archief_uitspraken();
+    }
     if (is_page('verhalen')) {
         return $content . ihn_archief_link();
     }
-
     return $content;
 }, 20);
 
